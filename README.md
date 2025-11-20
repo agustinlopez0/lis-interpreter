@@ -1,197 +1,149 @@
-# TP1 - ALP - 2024
+# 🚀 Intérprete LIS
 
-## Introducción
-Hola! Este README es un documento complementario al PDF de la consigna del TP. Se recomienda primero leer el PDF, ya que el objetivo de este documento es aclarar algunos detalles técnicos que van a ser útiles para resolver el trabajo.
+Un intérprete completo para el lenguaje de programación **LIS** (Lenguaje Imperativo Simple), implementado en Haskell. Este proyecto incluye un parser, múltiples estrategias de evaluación y un sistema de pruebas.
 
-### Stack
-Para este TP vamos a usar [**Stack**](https://docs.haskellstack.org/), una herramienta sencilla para desarrollar proyectos en Haskell. Stack tiene muchas utilidades, pero ahora nos vamos a concentrar sus funciones básicas.
+## 📋 Descripción
 
-Antes que nada, puede que tengas que instalarlo. En [1](https://docs.haskellstack.org/en/stable/README/#how-to-install) hay guías de instalación para distintas plataformas.
+LIS es un lenguaje de programación imperativo simple diseñado para la enseñanza de conceptos fundamentales de lenguajes de programación. Este intérprete permite ejecutar programas escritos en LIS, que incluyen:
 
-Stack se encarga de instalar la versión correcta de GHC, instalar los paquetes necesarios y compilar el proyecto. Para las primeras dos, basta con abrir una terminal en el directorio `TP1` y ejecutar:
+- **Expresiones aritméticas**: suma, resta, multiplicación, división
+- **Expresiones booleanas**: operadores lógicos y comparaciones
+- **Variables enteras**: asignación y manipulación de variables
+- **Estructuras de control**: condicionales (`if-then-else`) y bucles (`repeat-until`)
+- **Operaciones especiales**: incremento de variables (`++`)
+
+## ✨ Características
+
+- 🔍 **Parser completo** para el lenguaje LIS
+- ⚡ **Múltiples estrategias de evaluación** (Eval1, Eval2, Eval3)
+- 🎨 **Pretty Printer** para visualización legible de programas
+- 🧪 **Sistema de pruebas** con HUnit
+- 📦 **Gestión de dependencias** con Stack
+- 🛡️ **Type-safe** gracias a GADTs de Haskell
+
+## 🛠️ Tecnologías
+
+- **Haskell** - Lenguaje de programación funcional
+- **Stack** - Herramienta de gestión de proyectos
+- **Parsec** - Biblioteca de parsing
+- **GADTs** - Tipos de datos algebraicos generalizados
+- **HUnit** - Framework de testing
+
+## 📦 Requisitos
+
+- [Stack](https://docs.haskellstack.org/) (versión reciente)
+- GHC (se instala automáticamente con Stack)
+
+## 🚀 Instalación
+
+1. Clona el repositorio:
+```bash
+git clone <url-del-repositorio>
+cd TP-ALP
 ```
+
+2. Configura el entorno (solo la primera vez):
+```bash
 stack setup
 ```
-Esto puede demorar un rato porque se encarga de descargar e instalar la verisón correcta de GHC. Este comando solo se debería tener que ejecutar una única vez. Al terminar esto, está todo listo para compilar el proyecto, que se hace con:
-```
+
+3. Compila el proyecto:
+```bash
 stack build
 ```
-Este es el comando que van a tener que usar para compilar el proyecto cada vez que lo modifiquen.
 
-### Estructura del código
-La estructura del proyecto es la siguiente:
+## 💻 Uso
+
+### Ejecutar un programa LIS
+
+```bash
+stack exec TP1-exe -- ejemplos/sqrt.lis
 ```
-.
-├── app
-│   └── Main.hs
-├── src
-│   ├── AST.hs
-│   ├── Eval1.hs
-│   ├── Eval2.hs
-│   ├── Eval3.hs
-│   ├── PPLis.hs
-│   └── Parser.hs
-├── ejemplos
-│   ├── div.lis
-│   ├── error1.lis
-│   ├── error2.lis
-│   └── sqrt.lis
-├── tests
-├── README.md
-├── Setup.hs
-├── TP1.cabal
-├── package.yaml
-├── stack.yaml
-└── stack.yaml.lock
-```
-**IMPORTANTE:** Solo deberían tener que modificar archivos de los directorios `src` y, si quieren experimentar, `ejemplos` y `tests`.
 
-* En el directorio `app` se define el módulo `Main`, que implementa el ejecutable final. 
+### Opciones disponibles
 
-* En el directorio `src` se encuentran los módulos sobre los que van a trabajar:
-  - `AST` define los tipos de expresiones y comandos presentados en la consigna junto a algunos tipos auxiliares. 
-  - `Eval1`, `Eval2` y `Eval3` tienen los esqueletos para los distintos evaluadores.
-  - `Parser` tiene el esqueleto para el parser.
-  - `PPLis` tiene el Pretty Printer del lenguaje LIS. Este sirve para imprimir los programas de una manera más legible que haciendo `show` sobre el AST (y viene de regalo).
+- `-p`: Imprime el programa de entrada de forma legible
+- `-a`: Muestra el AST (Abstract Syntax Tree) del programa
+- `-e N`: Selecciona el evaluador (1, 2 o 3). Por defecto usa el evaluador 1
+- `-h`: Muestra la ayuda
 
-* En el directorio `ejemplos` hay algunos -*shock*- ejemplos de programas LIS. 
+### Ejemplos
 
-* En el directorio `tests` hay algunos -*shock*- casos de tests que pueden usar (y extender) para testear su implementación. 
-
-* El resto de los archivos son de configuración del proyecto.
-
-**IMPORTANTE:** Por favor, no cambiar los nombres de los módulos, tipos, constructores, funciones, etc.
-
-### ¿Cómo ejecutarlo?
-
-Una vez compilado el proyecto, se puede correr el ejecutable definido en `app/Main.hs` sobre un archivo `.lis` haciendo:
-```
-stack exec TP1-exe -- PATH_TO_SOURCE [-OPT]
-```
-Las opciones disponibles son:
-* `-p`: Imprimir el programa de entrada.
-* `-a`: Mostrar el AST del programa de entrada.
-* `-e N_EVALUADOR`: Elegir evaluador 1, 2 o 3 (1 por defecto).
-* `-h`: Imprimir ayuda.
-
-Por ejemplo, para imprimir el programa `sqrt.lis` del directorio `ejemplos`, ejecutar:
-```
+Imprimir un programa de forma legible:
+```bash
 stack exec TP1-exe -- ejemplos/sqrt.lis -p
 ```
-Para correrlo con el evaluador de `Eval2.hs` (que van a tener que definir ustedes):
-```
+
+Ejecutar con un evaluador específico:
+```bash
 stack exec TP1-exe -- ejemplos/sqrt.lis -e 2
 ```
-Inicialmente ambos comandos van a generar errores porque el parser y los evaluadores no están implementados, pero a medida de que vayan realizando el TP van a poder utilizarlos (`-p` y `-a` dependen de `Parser`, mientras que `-e n` depende de `Parser` y `Evaln`).
 
-### ¿Y GHCi?
-Si quieren usar `GHCi` para probar alguna de las funciones que definieron, pueden iniciar una sesión del intérprete con todos los módulos del directorio `src` ya cargados haciendo:
+Ver el AST de un programa:
+```bash
+stack exec TP1-exe -- ejemplos/sqrt.lis -a
 ```
+
+### Usar GHCi para desarrollo
+
+Para probar funciones en el intérprete interactivo:
+```bash
 stack ghci
 ```
 
-### Testeando la implementación
+### Ejecutar tests
 
-En el directorio `tests` pueden encontrar unos pocos casos de tests, escritos usando [**HUnit**](https://hackage.haskell.org/package/HUnit).
-Pueden agregar más casos de tests conforme van completado la implementación del intérprete.
-Para ejecutar los casos de tests basta con correr:
-```
+```bash
 stack test
 ```
 
-## Comentarios importantes (y no tanto)
-A continuación dejamos algunos comentarios sobre algunas herramientas de Haskell/GHC que no usamos en EDyA 2. No son muy difíciles, pero viene bien tener una referencia.
+## 📁 Estructura del Proyecto
 
-### GADTs
-La más importante es el uso de GADTs. Estos son tipos de datos algebraicos generalizados, que permiten que sus constructores instancien el tipo que parametriza el ADT. Pueden ver un explicaciones extensas en [2](https://downloads.haskell.org/~ghc/6.6/docs/html/users_guide/gadt.html), [3](https://en.wikipedia.org/wiki/Generalized_algebraic_data_type) y [4](http://dev.stephendiehl.com/hask/#gadts), pero probablemente sea suficiente el siguiente ejemplo.
-
-Supongamos que queremos representar en Haskell el siguiente lenguaje de expresiones enteras y booleanas:
 ```
-Term ::=   const Int 
-         | true 
-         | false
-         | suc Term
-         | isZero Term
+.
+├── app/
+│   └── Main.hs              # Punto de entrada del ejecutable
+├── src/
+│   ├── AST.hs               # Definición del árbol de sintaxis abstracta
+│   ├── Parser.hs            # Parser del lenguaje LIS
+│   ├── Eval1.hs             # Evaluador 1
+│   ├── Eval2.hs             # Evaluador 2
+│   ├── Eval3.hs             # Evaluador 3
+│   └── PPLis.hs             # Pretty Printer
+├── ejemplos/                # Programas de ejemplo en LIS
+│   ├── sqrt.lis
+│   ├── div.lis
+│   └── ...
+├── tests/                   # Casos de prueba
+└── INSTRUCCIONES.md         # Guía técnica detallada
 ```
-Es decir, un término puede ser una constante entera, un valor booleano, la aplicación de `suc` a un término o la aplicación de `isZero` a un término.
 
-En Haskell esto se podría representar como:
-```haskell
-data Term a = Const Int
-            | VTrue
-            | VFalse
-            | Suc (Term a)
-            | IsZero (Term a)
+## 📝 Ejemplo de Programa LIS
+
+```lis
+n = 25;
+i = -1;
+a = 0;
+g = 0;
+repeat {
+    i = i + 1; 
+    t = i * i;
+    g = a++
+} until t > n || t == n
 ```
-Sin embargo, nos gustaría que solo se puedan representar los términos que tienen sentido. En concreto, queremos que no se puedan expresar términos como `Suc (IsZero VFalse)`, ya que nuestra idea es que `suc` solo se pueda aplicar sobre expresiones enteras y que `isZero` solo se aplique a expresiones booleanas.
 
-Para esto mismo sirven los GADTs, que requieren la extensión `GADTs` de GHC (ya está incluída en el proyecto). Esta extensión nos da una nueva sintaxis para definir tipos de datos, en la que se le asigna a cada constructor su tipo explícitamente.
-Por ejemplo, el tipo `Term` se puede definir con esta sintaxis de la siguiente manera:
-```haskell
-data Term a where
-  Const  :: Int -> Term a
-  VTrue  :: Term a
-  VFalse :: Term a
-  Suc    :: Term a -> Term a
-  IsZero :: Term a -> Term a
-```
-Esta nueva declaración es equivalente a la anterior, pero ahora nos permite hacer algo interesante con el tipo `a` que parametriza a `Term`. Lo que vamos a hacer es instanciar `a` a distintos tipos, dependiendo del constructor:
-```haskell
-data Term a where
-  Const  :: Int -> Term Int
-  VTrue  :: Term Bool
-  VFalse :: Term Bool
-  Suc    :: Term Int -> Term Int
-  IsZero :: Term Int -> Term Bool
-```
-Ahora, esta declaración deja en claro sobre qué términos opera cada constructor. De esta manera, términos como `Suc (IsZero VFalse)` no son representables por este tipo de datos. Esto es muy bueno, porque nos asegura que todo valor de tipo `Term Int` va a ser una expresión entera bien formada, y lo mismo para `Term Bool`.
+## 📚 Documentación
 
-Otra ventaja de esta última declaración, es que nos permite definir un evaluador como:
-``` haskell
-eval :: Term a -> a
-eval (Const n) = n
-eval VTrue     = True
-...
-```
-En el que el tipo resultado de la función depende del término que se está evaluando.
+Para más detalles técnicos sobre la implementación, configuración y uso avanzado, consulta el archivo [INSTRUCCIONES.md](INSTRUCCIONES.md).
 
-El tipo de datos que representa las expresiones en LIS `Exp a` se define siguiendo esta misma idea.
+## 📄 Licencia
 
-**Comentario**: Para derivar instancias (como `Eq` y `Show`) de un GADTs hace falta otra extensión llamada `StandaloneDeriving` (también incluída en el proyecto). Esta permite escribir la cláusula `deriving` separada de la definición del ADT, como puede verse en `src/AST.hs`.
+Este proyecto está bajo la licencia BSD-3-Clause. Ver el archivo [LICENSE](LICENSE) para más detalles.
 
-### Map
-Para representar el estado en el módulo `Eval1` se utiliza el tipo `Map` de `Data.Map.Strict`. Un mapa de tipo `Map k v` representa una asociación de claves de tipo `k` a valores de tipo `v`. En la documentación de este módulo, disponible en [5](https://hackage.haskell.org/package/containers-0.6.3.1/docs/Data-Map-Strict.html), se describen todos las funciones que permiten manejarlos.
+## 👥 Contribuciones
 
-### Tuplas estrictas
-También el el módulo `Eval1`, varias funciones utilizan el tipo `Pair a b`. Este es parte del módulo `Data.Strict.Tuple`. Un elemento de `Pair a b` es esencialmente un par de valores `x` de tipo `a` e `y` de tipo `b`. Estos se pueden construir como `(x :!: y)`.
+Este es un proyecto académico. Las contribuciones son bienvenidas, pero por favor asegúrate de mantener la estructura y convenciones del código existente.
 
-La diferencia con el valor `(x, y)` de tipo `(a, b)` es que en `(x :!: y)` los valores `x` e `y` son evaluados de forma estricta (recordar que Haskell tiene evaluación peresoza por defecto). Esto va a venir bien para entender mejor el orden en el que se evalúan las expresiones. 
+---
 
-No deberían necesitar mucho más sobre este tipo, pero, como siempre, su documentación está en [6](http://hackage.haskell.org/package/strict-0.4/docs/Data-Strict-Tuple.html).
-
-### Pattern Synonyms
-La extensión `PatternSynonyms` (ya incluída en el proyecto) permite definir sinónimos para los constructores de un tipo de datos. Esto también posibilita abstraer ciertas construcciones útiles que no tienen una representación real en el tipo de datos.
-
-Por ejemplo, el cómando `if b then c` de la sintaxis concreta no tiene una representación directa en la sintaxis abstracta, ya que esta puede representarse como `if b then c else skip`. Esto se puede expresar en Haskell de la siguiente manera, presente en el módulo `AST`:
-``` haskell
-pattern IfThen :: Exp Bool -> Comm -> Comm
-pattern IfThen b c = IfThenElse b c Skip
-```
-Con esto, se puede usar el sinónimo `IfThen b c` tanto para hacer pattern-matching como para contruir valores.
-
-Para más detalles de esta extensión, ver [7](https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/pattern_synonyms.html).
-
-## Referencias
-[1] - https://docs.haskellstack.org/en/stable/README/#how-to-install
-
-[2] - https://downloads.haskell.org/~ghc/6.6/docs/html/users_guide/gadt.html
-
-[3] - https://en.wikipedia.org/wiki/Generalized_algebraic_data_type
-
-[4] - http://dev.stephendiehl.com/hask/#gadts
-
-[5] - https://hackage.haskell.org/package/containers-0.6.3.1/docs/Data-Map-Strict.html
-
-[6] - http://hackage.haskell.org/package/strict-0.4/docs/Data-Strict-Tuple.html
-
-[7] - https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/pattern_synonyms.html
+⭐ Si este proyecto te resultó útil, ¡no olvides darle una estrella!
